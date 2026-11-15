@@ -1,0 +1,8 @@
+{
+  "versionCode": 2,
+  "versionName": "1.1.0",
+  "apkUrl": "https://github.com/seu-usuario/EdgeGlowAOD/releases/download/v1.1.0/EdgeGlowAOD-MotoEdge50.apk",
+  "changelog": "• Sistema de microfone ininterrupto estilo Gemini e Alexa.\n• Suporte a palavra de ativação e conversa contínua sem cortes.\n• Diálogo de atualização automática ao iniciar o app.\n• Otimizações para a tela pOLED do Moto Edge 50.",
+  "releaseDate": "2026-11-15",
+  "mandatory": false
+}

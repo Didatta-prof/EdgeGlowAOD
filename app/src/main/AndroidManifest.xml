@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Acordar a tela suavemente para exibir o AOD/Edge Lighting -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- Exibir sobre outros apps (caso queira animação com a tela ligada) -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <!-- Notificações no Android 13+ (Tiramisu) -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- Evitar otimização de bateria agressiva para não ser encerrado pelo sistema -->
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+
+    <!-- Acesso à internet para checagem e download de atualizações e API Gemini -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- Instalação automática do pacote APK atualizado -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
+    <!-- Microfone ininterrupto estilo Alexa / Gemini Live -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@android:drawable/ic_dialog_info"
+        android:label="Edge Glow AOD"
+        android:roundIcon="@android:drawable/ic_dialog_info"
+        android:supportsRtl="true"
+        android:theme="@android:style/Theme.Material.NoActionBar">
+
+        <!-- Tela Principal de Configurações -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Tela AOD / Lockscreen Overlay com fundo preto OLED e animação das bordas -->
+        <activity
+            android:name=".AodActivity"
+            android:exported="false"
+            android:showWhenLocked="true"
+            android:turnScreenOn="true"
+            android:excludeFromRecents="true"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:launchMode="singleInstance" />
+
+        <!-- Listener de Notificações -->
+        <service
+            android:name=".NotificationService"
+            android:label="Edge Glow Notification Listener"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
+
+        <!-- Serviço de Microfone Ininterrupto & Conversa Contínua (Gemini / Alexa style) -->
+        <service
+            android:name=".voice.ContinuousVoiceService"
+            android:foregroundServiceType="microphone"
+            android:exported="false" />
+
+        <!-- FileProvider para instalação segura do APK baixado pelo Auto-Updater -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+    </application>
+
+</manifest>
